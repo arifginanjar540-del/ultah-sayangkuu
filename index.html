@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Happy Birthday Sayang!</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Quicksand:wght@500;700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-pink: #fbcfe8;
+            --paper-pink: #fdf2f8;
+            --main-pink: #ec4899;
+            --dark-pink: #be185d;
+            --tape-color: rgba(244, 114, 182, 0.4);
+            --shadow: rgba(0, 0, 0, 0.12);
+            --text-dark: #334155;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background-color: var(--bg-pink);
+            background-image: 
+                radial-gradient(#f472b6 1px, transparent 1px),
+                radial-gradient(#f472b6 1px, #fbcfe8 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            position: relative;
+            color: var(--text-dark);
+        }
+
+        /* === PARTIKEL LATAR BELAKANG === */
+        .bg-particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .particle {
+            position: absolute;
+            bottom: -50px;
+            opacity: 0;
+            animation: floatUp linear infinite;
+        }
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* === LAYAR UNTUK TIAP HALAMAN === */
+        .screen {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: scale(0.96);
+            z-index: 10;
+            padding: 15px;
+        }
+        .screen.active {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            z-index: 20;
+        }
+
+        /* === TOMBOL UTAMA === */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--main-pink), var(--dark-pink));
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(236, 72, 153, 0.35);
+            transition: transform 0.2s ease;
+            margin-top: 15px;
+        }
+        .btn-primary:active { transform: scale(0.95); }
+
+        h1, h2 { font-family: 'Caveat', cursive; text-align: center; }
+
+        /* === SCREEN 1: INTRO === */
+        #intro-screen h1 { font-size: clamp(2.5rem, 8vw, 3.2rem); color: var(--dark-pink); margin-bottom: 10px; }
+        #intro-screen p { font-size: 1.05rem; text-align: center; color: #475569; line-height: 1.5; }
+
+        /* === SCREEN 2: KUE & LILIN === */
+        .cake-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 360px;
+        }
+        .cake-wrapper h2 {
+            font-size: 2.8rem;
+            color: var(--dark-pink);
+            margin-bottom: 80px; 
+        }
+        .cake-container { position: relative; margin-top: 10px; }
+        .cake {
+            width: 180px; height: 90px;
+            background-color: #f472b6;
+            border-radius: 12px 12px 0 0;
+            position: relative;
+            box-shadow: inset 0 -15px 0 rgba(0,0,0,0.06), 0 8px 0 #db2777;
+        }
+        .drip {
+            position: absolute; top: 0; width: 25px; height: 35px;
+            background-color: #fff; border-radius: 0 0 20px 20px;
+        }
+        .drip:nth-child(1) { left: 10px; height: 42px; }
+        .drip:nth-child(2) { left: 45px; height: 25px; }
+        .drip:nth-child(3) { left: 80px; height: 48px; }
+        .drip:nth-child(4) { left: 115px; height: 32px; }
+        .drip:nth-child(5) { left: 145px; height: 42px; }
+
+        .candle {
+            position: absolute; top: -55px; left: 50%; transform: translateX(-50%);
+            width: 16px; height: 55px;
+            background: repeating-linear-gradient(45deg, #fff, #fff 5px, #f43f5e 5px, #f43f5e 10px);
+            border-radius: 3px;
+        }
+        .flame {
+            position: absolute; top: -28px; left: 50%; transform: translateX(-50%);
+            width: 18px; height: 28px; background: #fbbf24;
+            border-radius: 50% 50% 20% 20%;
+            box-shadow: 0 0 15px #fbbf24, inset 0 0 8px #fef08a;
+            animation: flicker 0.1s infinite alternate; 
+            transition: all 0.5s ease;
+            cursor: pointer;
+        }
+        .flame.out { opacity: 0; transform: translateX(-50%) scale(0); }
+        .smoke {
+            position: absolute; top: -35px; left: 50%; transform: translateX(-50%);
+            width: 8px; height: 8px; background: rgba(150, 150, 150, 0);
+            border-radius: 50%; transition: all 1s ease;
+        }
+        .smoke.active { animation: smokeRise 2s forwards; }
+
+        @keyframes flicker {
+            0% { transform: translateX(-50%) rotate(-2deg); }
+            100% { transform: translateX(-50%) rotate(2deg); }
+        }
+        @keyframes smokeRise {
+            0% { background: rgba(150, 150, 150, 0.8); transform: translateX(-50%) translateY(0) scale(1); }
+            100% { background: rgba(150, 150, 150, 0); transform: translateX(-50%) translateY(-90px) scale(3); }
+        }
+        .instruction { margin-top: 35px; font-size: 0.95rem; text-align: center; color: #475569; }
+
+        /* === TRANSISI MAGIC === */
+        .transition-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .glowing-heart {
+            font-size: 6rem;
+            animation: pulse-heart 1.5s infinite;
+            filter: drop-shadow(0 0 20px rgba(236, 72, 153, 0.8));
+            margin-bottom: 20px;
+        }
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.15); filter: drop-shadow(0 0 35px rgba(236, 72, 153, 1)); }
+            100% { transform: scale(1); }
+        }
+        #transition-text {
+            font-family: 'Caveat', cursive;
+            font-size: clamp(2rem, 6vw, 2.5rem);
+            color: var(--dark-pink);
+            transition: opacity 0.5s ease;
+        }
+
+        /* === 3D SCRAPBOOK === */
+        .book {
+            position: relative;
+            width: 90vw;
+            max-width: 400px;
+            height: 75vh;
+            max-height: 600px;
+            perspective: 1500px;
+            margin: 0 auto;
+        }
+
+        .spiral-binder-left {
+            position: absolute;
+            top: 2%;
+            left: -12px;
+            width: 30px;
+            height: 96%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            z-index: 100;
+            pointer-events: none;
+        }
+        .spiral-ring {
+            width: 34px; height: 10px;
+            background: linear-gradient(90deg, #64748b, #e2e8f0, #475569);
+            border-radius: 5px;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0; left: 0;
+            background: var(--paper-pink);
+            border-radius: 4px 16px 16px 4px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.15), inset -2px 0 10px rgba(236,72,153,0.05);
+            border: 2px solid #f472b6;
+            border-left: none;
+            
+            transform-origin: left center;
+            transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+            backface-visibility: hidden;
+            
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            gap: 15px;
+            padding: 20px 20px 20px 40px; 
+            
+            overflow-y: auto;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .page::-webkit-scrollbar { display: none; }
+
+        .page.flipped { transform: rotateY(-180deg); }
+        
+        /* Z-INDEX UNTUK 22 HALAMAN */
+        #page1  { z-index: 22; }
+        #page2  { z-index: 21; }
+        #page3  { z-index: 20; }
+        #page4  { z-index: 19; }
+        #page5  { z-index: 18; }
+        #page6  { z-index: 17; }
+        #page7  { z-index: 16; }
+        #page8  { z-index: 15; }
+        #page9  { z-index: 14; }
+        #page10 { z-index: 13; }
+        #page11 { z-index: 12; }
+        #page12 { z-index: 11; }
+        #page13 { z-index: 10; }
+        #page14 { z-index: 9; }
+        #page15 { z-index: 8; }
+        #page16 { z-index: 7; }
+        #page17 { z-index: 6; }
+        #page18 { z-index: 5; }
+        #page19 { z-index: 4; }
+        #page20 { z-index: 3; }
+        #page21 { z-index: 2; }
+        #page22 { z-index: 1; }
+
+        /* Elemen Kartu */
+        .scrap-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 12px;
+            box-shadow: 0 4px 10px var(--shadow);
+            position: relative;
+            width: 100%;
+            max-width: 330px;
+            margin: 0 auto;
+            text-align: left;
+        }
+        .handwriting { font-family: 'Caveat', cursive; font-size: 1.3rem; color: #334155; line-height: 1.3; }
+        .title-badge { background: var(--main-pink); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.85rem; font-weight: bold; display: inline-block; margin-bottom: 8px; }
+        .washi-tape { position: absolute; top: -8px; left: 30%; width: 60px; height: 16px; background: var(--tape-color); transform: rotate(-3deg); z-index: 5; }
+        .polaroid-box { background: white; padding: 6px 6px 15px 6px; box-shadow: 0 3px 8px rgba(0,0,0,0.15); border-radius: 4px; text-align: center; }
+        .polaroid-box img { width: 100%; height: 150px; object-fit: contain; background: #fff; border-radius: 2px; }
+        
+        .calendar-widget { background: #fff; border-radius: 8px; padding: 8px; border: 2px dashed #f472b6; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; font-size: 0.75rem; margin-top: 5px; text-align: center;}
+        .calendar-day-special { background: var(--main-pink); color: white; border-radius: 50%; font-weight: bold; }
+        .todo-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; margin-bottom: 6px; }
+        .todo-item input { accent-color: var(--main-pink); width: 16px; height: 16px;}
+
+        /* Navigasi Bawah Buku */
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 90vw;
+            max-width: 400px;
+            margin-top: 15px;
+        }
+        .btn-nav {
+            background: var(--main-pink);
+            color: white;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(236, 72, 153, 0.3);
+        }
+
+        /* === GALERI === */
+        #gallery-screen { justify-content: flex-start; padding-top: 25px; overflow-y: auto; }
+        .gallery-container { width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 12px; }
+        .gallery-filters { display: flex; gap: 8px; justify-content: center; }
+        .filter-btn { background: white; border: 1px solid var(--main-pink); color: var(--main-pink); padding: 6px 14px; border-radius: 20px; font-size: 0.8rem; font-weight: bold; cursor: pointer; }
+        .filter-btn.active { background: var(--main-pink); color: white; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .media-card { background: white; padding: 6px; border-radius: 10px; box-shadow: 0 3px 8px rgba(0,0,0,0.08); display: flex; flex-direction: column; align-items: center; }
+        .media-card.full-width { grid-column: span 2; }
+        .media-card img { width: 100%; height: 120px; border-radius: 6px; object-fit: cover; }
+        .media-card video { width: 100%; max-height: 200px; border-radius: 6px; background: black; }
+        .media-caption { font-family: 'Caveat', cursive; font-size: 1.1rem; margin-top: 4px; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <audio id="bg-music" loop>
+        <source src="backsound.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- INTRO -->
+    <div id="intro-screen" class="screen active">
+        <h1>Halo Sayanggg! ❤️</h1>
+        <p>Ada kejutan kecil buat kamu hari ini.<br>Siap-siap ya!</p>
+        <button class="btn-primary" onclick="goToCake()">Buka Kejutannya 🎁</button>
+    </div>
+
+    <!-- KUE ULTAH -->
+    <div id="cake-screen" class="screen">
+        <div class="cake-wrapper">
+            <h2>Make a Wish...</h2>
+            <div class="cake-container">
+                <div class="cake">
+                    <div class="drip"></div><div class="drip"></div><div class="drip"></div><div class="drip"></div><div class="drip"></div>
+                    <div class="candle">
+                        <div class="flame" id="flame" onclick="blowOutCandle()"></div>
+                        <div class="smoke" id="smoke"></div>
+                    </div>
+                </div>
+            </div>
+            <p class="instruction" id="mic-instruction">
+                Coba deketin HP nya ke mulut,<br>terus <b>TIUP LILINNYA!</b> 💨<br>
+                <small style="font-size: 0.75rem; color: #888; display: block; margin-top: 6px;">(kalo nda bisa ditiup coba TAP/Sentuh api lilinnya)</small>
+            </p>
+        </div>
+    </div>
+
+    <!-- TRANSISI MAGIC -->
+    <div id="transition-screen" class="screen">
+        <div class="transition-content">
+            <div class="glowing-heart">💖</div>
+            <p id="transition-text">Menerbangkan doamu ke langit... ✨</p>
+        </div>
+    </div>
+
+    <!-- SCRAPBOOK BUKU -->
+    <div id="scrapbook-screen" class="screen">
+        
+        <div class="book">
+            <div class="spiral-binder-left">
+                <div class="spiral-ring"></div><div class="spiral-ring"></div>
+                <div class="spiral-ring"></div><div class="spiral-ring"></div>
+                <div class="spiral-ring"></div><div class="spiral-ring"></div>
+                <div class="spiral-ring"></div><div class="spiral-ring"></div>
+                <div class="spiral-ring"></div><div class="spiral-ring"></div>
+            </div>
+            
+            <!-- ===== PEMBUKAAN ===== -->
+
+            <!-- Halaman 1 -->
+            <div class="page" id="page1">
+                <div class="scrap-card" style="background: #fff0f6; text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge">HAI SAYANGGG... 🌹</span>
+                    <p class="handwriting" style="margin-top: 15px; text-align: center; font-size: 1.4rem;">
+                        Aku kasih buku online ini<br>
+                        khusus buat kamu...<br><br>
+                        Jangan lupa dibaca satu per satu yaa ✨
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 2 -->
+            <div class="page" id="page2">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <div class="washi-tape"></div>
+                    <span class="title-badge">HAPPY BIRTHDAY! 🎉</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="foto1.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <p class="handwriting" style="margin-top: 6px; text-align: center; font-size: 1.1rem;">
+                        Selamat ulang tahun sayangggkuuuu, cintakuuu, princesskuuu, cantikkuuu, semestakuuu 🫶🏻🤍✨🎉
+                    </p>
+                </div>
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge">IT'S YOUR BIRTHDAY 🗓️</span>
+                    <div class="calendar-widget">
+                        <div style="font-weight: bold; font-size: 0.70rem; color: var(--dark-pink); text-align: center;">JULI 2005</div>
+                        <div class="calendar-grid">
+                            <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+                            <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span>
+                            <span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span>
+                            <span>15</span><span>16</span><span>17</span><span>18</span><span>19</span><span>20</span><span>21</span>
+                            <span>22</span><span>23</span><span>24</span><span>25</span><span>26</span><span class="calendar-day-special">27</span><span>28</span>
+                            <span>29</span><span>30</span><span>31</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ===== ISI (PESAN, DOA & HARAPAN) ===== -->
+
+            <!-- Halaman 3 -->
+            <div class="page" id="page3">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">MY PRAYERS 🤲</span>
+                    <div class="polaroid-box" style="transform: rotate(1deg); margin-top: 5px;">
+                        <img src="2.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Doa Terbaikku ✨
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Hari ini, aku langitkan semua doa terbaikku untukmu. Semoga semua hal yang membuatmu runtuh menjadi alasan untuk kamu tumbuh, semoga dunia selalu menjagamu.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 4 -->
+            <div class="page" id="page4">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">WISHES COME TRUE 🌸</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="foto3.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Harapan Indah
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Semoga semua harapan yang kamu inginkan segera menjadi kenyataan.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 5 -->
+            <div class="page" id="page5">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">ALL THE BEST 🌟</span>
+                    <div class="polaroid-box" style="transform: rotate(2deg); margin-top: 5px;">
+                        <img src="foto4.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Makin Segalanya!
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Makin pinter, makin lucu, makin cantik, makin makin pokoknya yaa... Doa yang terbaik buat kamu!
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        💖
+                    </h2>
+
+                </div>                
+            </div>
+
+            <!-- Halaman 6 -->
+            <div class="page" id="page6">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">PROUD OF YOU 🐰</span>
+                    <div class="polaroid-box" style="transform: rotate(-2deg); margin-top: 5px;">
+                        <img src="foto2.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                
+                    </h2>                    
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Jangan lupa ucapkan terimakasih pada dirimu sendiri yang sangat kuat sampai detik ini.
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        PROUD OF YOU SAYANGGG
+                    </h2>                    
+                </div>                
+            </div>
+
+            <!-- Halaman 7 -->
+            <div class="page" id="page7">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">GRATEFUL 🎈</span>
+                    <div class="polaroid-box" style="transform: rotate(1deg); margin-top: 5px;">
+                        <img src="foto5.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Sehat-sehat terus yaa sayanggg. Jangan pernah lupa untuk bersyukur.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 8 -->
+            <div class="page" id="page8">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">STAY WITH ME 🥰</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="9.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Love You! 💛
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Makasi ya udah mau bertahan sampai sekarang, aku bersyukur bisa lewatin hari-hariku bareng kamu. Sayangku, cintaku.
+                    </p>
+                </div>                
+            </div>
+
+            <!-- ===== ISI (UNGKAPAN CINTA & KENANGAN) ===== -->
+
+            <!-- Halaman 9 -->
+            <div class="page" id="page9">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">FOR YOU ❤️</span>
+                    <div class="polaroid-box" style="transform: rotate(2deg); margin-top: 5px;">
+                        <img src="foto6.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Aku minta maaf kalo belum bisa jadi apa yang kamu mau. Tapi aku akan berusaha jadi yang terbaik buat KAMU!
+                    </p>
+                </div>                               
+            </div>
+
+            <!-- Halaman 10 -->
+            <div class="page" id="page10">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">MY WEEKEND 🐻</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="foto7.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Till The End 💞
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Aku suka weekend. Tapi lebih suka lagi WITH YOU, TILL THE END.
+                    </p>
+                </div>                                
+            </div>
+
+            <!-- Halaman 11 -->
+            <div class="page" id="page11">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">NEW CHAPTER AHEAD ✨</span>
+                    <div class="polaroid-box" style="transform: rotate(1deg); margin-top: 5px;">
+                        <img src="foto8.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        🌍
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Ini dari aku buat kamu!<br> Kalo kamu capek boleh kok jadiin aku tempat bersandar. Rasa sayang aku ke kamu itu melebihi seisi semesta🤭.
+                    </p>
+                </div>                
+            </div>
+
+            <!-- Halaman 12 -->
+            <div class="page" id="page12">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">Pesan Untukmu 💌</span>
+                    <div class="polaroid-box" style="transform: rotate(-2deg); margin-top: 5px;">
+                        <img src="10.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Semangat ngejalanin hari-harinya ya, tetap jaga kesehatan! Kalau capek boleh ngeluh kapanpun gapapa. Harus Bahagia, Harus Kuat, Harus Sehat.
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Semangat Sayang!
+                    </h2>                    
+                </div>                 
+            </div>
+
+            <!-- Halaman 13 -->
+            <div class="page" id="page13">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">LOVE & COMPLEMENT 🧩</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="foto9.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2rem; color: var(--main-pink); margin: 8px 0;">
+                        Makna LOVE ✨
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.05rem; color: #555;">
+                        Love you,<br> 
+                        Only you,<br>
+                        Very very much,<br>
+                        Everyday more & more.
+                    </p>
+                </div>                
+            </div>
+
+            <!-- Halaman 14 -->
+            <div class="page" id="page14">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">YOU COMPLETE ME 🧩</span>
+                    <div class="polaroid-box" style="transform: rotate(2deg); margin-top: 5px;">
+                        <img src="foto10.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Pelengkap Hidupku
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        You Complete Me! Bagiku kamu adalah puzzle yang melengkapi hidup aku.
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        💖
+                    </h2>                    
+                </div>                                
+            </div>
+
+            <!-- ===== PENUTUP ===== -->
+
+            <!-- Halaman 15 -->
+            <div class="page" id="page15">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">PUNYAKU 💙</span>
+                    <div class="polaroid-box" style="transform: rotate(-2deg); margin-top: 5px;">
+                        <img src="foto11.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Cm : Centimeter,<br>
+                        Dm : Desimeter,<br>
+                        Hm : Hektometer,<br>
+                        Km : punyaku!
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Kamu Punyaku 💙
+                    </h2>
+                </div>
+            </div>
+
+            <!-- Halaman 16 -->
+            <div class="page" id="page16">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">OUR STORY 📖</span>
+                    <div class="polaroid-box" style="transform: rotate(1deg); margin-top: 5px;">
+                        <img src="foto12.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2rem; color: var(--main-pink); margin: 8px 0;">
+                        Cerita Indah 🌸
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.05rem; color: #555;">
+                        Bersamamu adalah cerita indah yang tak ingin aku akhiri. Terima kasih telah menjadi dukunganku saat berada di waktu terberat.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 17 -->
+            <div class="page" id="page17">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge">SUSAH, SENANG, BADAI ⛈️</span>
+                    <p class="handwriting" style="font-size: 1.1rem; margin-bottom: 6px;">
+                        Sayangggg kita hebat yaa udah ngelewatin susah, senang, sedih bareng-bareng...
+                    </p>
+                    <div class="polaroid-box">
+                        <img src="3.jpg" alt="Foto Ucapan">
+                    </div>
+                </div>
+                <div class="scrap-card" style="background: #fff0f6; text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge">PISAH BUKAN PILIHAN! 💪</span>
+                    <p class="handwriting" style="font-size: 1.1rem; color: var(--dark-pink); font-weight: bold; text-align: center;">
+                        Nyari yang kayak kamu nggak akan pernah ada gantinya! ❌
+                    </p>
+                </div>                
+            </div>
+
+            <!-- Halaman 18 -->
+            <div class="page" id="page18">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">BE YOURSELF 🏹</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="foto13.jpeg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Jangan pernah mengubah diri cuma buat menuhin perkataan orang lain yaa sayanggg, inget jadi diri sendiri itu lebih baik.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Halaman 19 -->
+            <div class="page" id="page19">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge">FUTURE TO-DO LIST 📝</span>
+                    <div class="todo-item"><input type="checkbox" checked disabled> <span>Ngelewatin hari-hari bersama</span></div>
+                    <div class="todo-item"><input type="checkbox" checked disabled> <span>Rayain ultah kamu tahun ini</span></div>
+                    <div class="todo-item"><input type="checkbox"> <span>Beli Outfit Pasangan</span></div>
+                    <div class="todo-item"><input type="checkbox"> <span>Jalan-jalan ke Dieng</span></div>
+                    <div class="todo-item"><input type="checkbox"> <span>Nabung Masa Depan</span></div>
+                    <div class="todo-item"><input type="checkbox"> <span>Melaju ke hubungan serius 💍</span></div>
+                </div>                
+            </div>
+
+            <!-- Halaman 20 -->
+            <div class="page" id="page20">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">MY SUPPORT 🦋</span>
+                    <div class="polaroid-box" style="transform: rotate(2deg); margin-top: 5px;">
+                        <img src="11.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Support Sistemku
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Terimakasih telah menjadi dukunganku dalam situasi apapun baik senang maupun saat aku down.
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        🌸
+                    </h2>
+                </div>                
+            </div>
+            
+            <!-- Halaman 21 -->
+            <div class="page" id="page21">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">ALWAYS LOVE YOU 🐻</span>
+                    <div class="polaroid-box" style="transform: rotate(-2deg); margin-top: 5px;">
+                        <img src="7.jpg" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        Always Love You!
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Selalu dan selamanya bakal sayang sama kamu!
+                    </p>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        ❤️
+                    </h2>                    
+                </div>
+            </div>
+            
+            <!-- Halaman 22 -->
+            <div class="page" id="page22">
+                <div class="scrap-card" style="text-align: center; border: 2px solid var(--main-pink);">
+                    <span class="title-badge" style="background: var(--dark-pink);">NEW CHAPTER AHEAD ✨</span>
+                    <div class="polaroid-box" style="transform: rotate(-1deg); margin-top: 5px;">
+                        <img src="spesial.png" alt="Foto Ucapan">
+                    </div>
+                    <h2 class="handwriting" style="font-size: 2.2rem; color: var(--main-pink); margin: 10px 0;">
+                        I Love You! ❤️
+                    </h2>
+                    <p class="handwriting" style="font-size: 1.1rem; color: #555;">
+                        Terima kasih sudah jadi rumah terbaik selama 5 tahun ini. Yuk lanjut ke galeri kenangan kita!
+                    </p>
+                    <button class="btn-primary" style="padding: 10px 20px; font-size: 0.9rem; margin-top: 15px; width: 100%;" onclick="nextScreen('gallery-screen')">
+                    Lihat Galeri Kita 📸
+                    </button>
+                </div>
+            </div>            
+        </div>
+
+        <div class="nav-bar">
+            <button class="btn-nav" id="btn-prev" onclick="prevPage()">⬅️ Balik</button>
+            <span id="page-indicator" style="font-weight: bold; color: var(--dark-pink); font-size: 0.9rem;">Hal 1/22</span>
+            <button class="btn-nav" id="btn-next" onclick="nextPage()">Buka ➡️</button>
+        </div>
+    </div>
+
+    <!-- GALERI KENANGAN -->
+    <div id="gallery-screen" class="screen" style="display: flex; flex-direction: column; justify-content: space-between; padding-top: 15px; padding-bottom: 15px; overflow: hidden;">
+        
+        <!-- BAGIAN ATAS (TETAP TAMPIL / TIDAK IKUT SCROLL) -->
+        <div style="flex-shrink: 0; text-align: center; width: 100%; max-width: 400px;">
+            <h2 style="color: var(--dark-pink); font-size: 2rem; margin-bottom: 2px;">Galeri Kenangan 📸🎬</h2>
+            <p style="font-size: 0.8rem; color: #64748b; margin-bottom: 4px;">Momen manis kita tersimpan di sini</p>
+            <div style="font-size: 0.75rem; color: var(--main-pink); font-weight: bold; background: rgba(255,255,255,0.7); display: inline-block; padding: 2px 10px; border-radius: 10px; margin-bottom: 8px;">
+                ⬇️ Scroll ke bawah untuk melihat lebih banyak
+            </div>
+            
+            <!-- Tombol Filter dipindah ke sini agar tetap menempel (sticky) -->
+            <div class="gallery-filters" style="margin-bottom: 10px;">
+                <button class="filter-btn active" onclick="filterGallery('all', this)">Semua</button>
+                <button class="filter-btn" onclick="filterGallery('photo', this)">Foto 📷</button>
+                <button class="filter-btn" onclick="filterGallery('video', this)">Video 🎥</button>
+            </div>
+        </div>
+
+        <!-- BAGIAN TENGAH (AREA FOTO & VIDEO YANG BISA DI-SCROLL) -->
+        <div style="flex-grow: 1; overflow-y: auto; width: 100%; max-width: 400px; padding: 0 5px; -ms-overflow-style: none; scrollbar-width: none;">
+            <div class="gallery-container" style="width: 100%;">
+                <div class="gallery-grid">
+                    <div class="media-card photo">
+                        <img src="G1.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G2.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card video full-width">
+                        <video controls poster="">
+                            <source src="V1.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G3.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G4.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card video full-width">
+                        <video controls poster="">
+                            <source src="V6.mp4" type="video/mp4">
+                        </video>
+                    </div>      
+                    <div class="media-card photo">
+                        <img src="G5.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G6.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card video full-width">
+                        <video controls poster="">
+                            <source src="V3.mp4" type="video/mp4">
+                        </video>
+                    </div>      
+                    <div class="media-card photo">
+                        <img src="G7.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G8.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G9.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="G10.jpg" alt="Foto 2">
+                    </div>  
+                    <div class="media-card photo">
+                        <img src="F1.jpeg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F2.jpeg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F3.jpeg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F4.jpeg" alt="Foto 2">
+                    </div>                                        
+                    <div class="media-card video full-width">
+                        <video controls poster="">
+                            <source src="V4.mp4" type="video/mp4">
+                        </video>
+                    </div>     
+                    <div class="media-card photo">
+                        <img src="F5.jpeg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F6.jpeg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F7.jpeg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="F8.jpeg" alt="Foto 2">                      
+                    </div>              
+                    <div class="media-card photo">
+                        <img src="E1.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="E2.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="E3.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="E4.jpg" alt="Foto 2">
+                    </div>     
+                    <div class="media-card photo">
+                        <img src="C1.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="C2.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="C3.jpg" alt="Foto 1">
+                    </div>   
+                    <div class="media-card photo">
+                        <img src="C5.jpg" alt="Foto 2">
+                    </div>                                                                                                   
+                    <div class="media-card video full-width">
+                        <video controls poster="">
+                            <source src="V2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D1.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D2.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D3.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D4.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D5.jpg" alt="Foto 2">
+                    </div>    
+                    <div class="media-card photo">
+                        <img src="D6.jpg" alt="Foto 2">
+                    </div>                                                                                                            
+                    <div class="media-card photo">
+                        <img src="D7.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D8.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D9.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D10.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D11.jpg" alt="Foto 2">
+                    </div>    
+                    <div class="media-card photo">
+                        <img src="D12.jpg" alt="Foto 2">
+                    </div>                                                                                                            
+                    <div class="media-card photo">
+                        <img src="D13.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D14.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="D15.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B1.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B2.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B3.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B4.jpg" alt="Foto 2">
+                    </div>    
+                    <div class="media-card photo">
+                        <img src="B5.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B6.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B7.jpg" alt="Foto 2">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B8.jpg" alt="Foto 1">
+                    </div>
+                    <div class="media-card photo">
+                        <img src="B9.jpg" alt="Foto 2">
+                    </div>    
+                </div>
+            </div>
+        </div>
+
+        <!-- BAGIAN BAWAH (NAVIGASI) -->
+        <div style="flex-shrink: 0; width: 100%; max-width: 400px; display: flex; gap: 10px; justify-content: center; padding-top: 10px; border-top: 1px dashed rgba(236, 72, 153, 0.3); background: var(--bg-pink);">
+            <button class="btn-primary" style="background: #64748b; padding: 8px 16px; font-size: 0.8rem; margin-top: 0;" onclick="nextScreen('scrapbook-screen')">⬅️ Ke Buku</button>
+            <button class="btn-primary" style="padding: 8px 16px; font-size: 0.8rem; margin-top: 0;" onclick="location.reload()">Ulangi 🔄</button>
+        </div>
+    </div>
+
+    <script>
+        // === PARTIKEL LATAR BELAKANG ===
+        function initParticles() {
+            const container = document.createElement('div');
+            container.className = 'bg-particles';
+            document.body.appendChild(container);
+            const symbols = ['❤️', '✨', '🌸', '💖', '⭐', '🎈'];
+            for (let i = 0; i < 14; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                p.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.fontSize = (Math.random() * 1.2 + 0.8) + 'rem';
+                p.style.animationDuration = (Math.random() * 6 + 6) + 's';
+                p.style.animationDelay = (Math.random() * 5) + 's';
+                container.appendChild(p);
+            }
+        }
+        initParticles();
+
+        // === MUSIK & TRANSISI SCREEN ===
+        const bgMusic = document.getElementById('bg-music');
+        function nextScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function goToCake() {
+            if (bgMusic.paused) {
+                bgMusic.volume = 0.5;
+                bgMusic.play().catch(e => console.log("Autoplay diblokir"));
+            }
+            nextScreen('cake-screen');
+            initMicrophone();
+        }
+
+        // === MIKROFON TIUP LILIN ===
+        let audioContext, analyser, microphone, isBlownOut = false, animationFrameId;
+
+        async function initMicrophone() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                analyser = audioContext.createAnalyser();
+                microphone = audioContext.createMediaStreamSource(stream);
+                microphone.connect(analyser);
+                analyser.fftSize = 256;
+                checkBlow();
+            } catch (err) {
+                document.getElementById('mic-instruction').innerHTML = "Izin mikrofon ditolak.<br><b>Tap/Sentuh api lilinnya ya!</b> 👆";
+            }
+        }
+
+        function checkBlow() {
+            if (isBlownOut) return;
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+            analyser.getByteFrequencyData(dataArray);
+            let sum = 0;
+            for (let i = 0; i < dataArray.length; i++) sum += dataArray[i];
+            let average = sum / dataArray.length;
+
+            if (average > 70) blowOutCandle();
+            else animationFrameId = requestAnimationFrame(checkBlow);
+        }
+
+        function blowOutCandle() {
+            if (isBlownOut) return;
+            isBlownOut = true;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+
+            document.getElementById('flame').classList.add('out');
+            document.getElementById('smoke').classList.add('active');
+            document.getElementById('mic-instruction').innerHTML = "Yeay! Doa sudah diterbangkan ✨";
+
+            setTimeout(() => {
+                nextScreen('transition-screen');
+                
+                setTimeout(() => {
+                    const transText = document.getElementById('transition-text');
+                    transText.style.opacity = '0';
+                    setTimeout(() => {
+                        transText.innerHTML = "Membuka lembaran kenangan kita... 📖";
+                        transText.style.opacity = '1';
+                    }, 500);
+                }, 2500);
+
+                setTimeout(() => {
+                    nextScreen('scrapbook-screen');
+                }, 5000);
+
+            }, 2000);
+        }
+
+        // === LOGIKA ANIMASI BUKA BUKU 3D ===
+        let currentPage = 1;
+        const totalPages = 22; // TOTAL 22 HALAMAN
+
+        function updateBookNav() {
+            document.getElementById('page-indicator').innerText = `Hal ${currentPage}/${totalPages}`;
+            document.getElementById('btn-prev').style.opacity = currentPage === 1 ? '0.5' : '1';
+            document.getElementById('btn-next').style.opacity = currentPage === totalPages ? '0.5' : '1';
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                document.getElementById('page' + currentPage).classList.add('flipped');
+                currentPage++;
+                updateBookNav();
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                document.getElementById('page' + currentPage).classList.remove('flipped');
+                updateBookNav();
+            }
+        }
+
+        let startX = 0;
+        const bookElement = document.querySelector('.book');
+        bookElement.addEventListener('touchstart', e => { startX = e.changedTouches[0].screenX; }, {passive: true});
+        bookElement.addEventListener('touchend', e => {
+            let endX = e.changedTouches[0].screenX;
+            if (startX - endX > 40) nextPage();
+            if (endX - startX > 40) prevPage();
+        }, {passive: true});
+        updateBookNav();
+
+        // === GALERI FILTER ===
+        function filterGallery(type, btnElement) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            btnElement.classList.add('active');
+            document.querySelectorAll('.media-card').forEach(item => {
+                if (type === 'all' || item.classList.contains(type)) item.style.display = 'flex';
+                else item.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
